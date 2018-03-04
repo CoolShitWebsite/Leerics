@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="assets/materialize.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="assets/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<style>
+:root {
+	--color: #0054aa;
+	--trans-color: rgba(0,84,170,0.5);
+}
+
+body, #themeing-modal, #leerics-side, .modal .modal-footer, .dropdown-content, .divider {
+transition: background-color 0.5s ease;
+}
+
+html, body, ul:not(.browser-default) {
+	overflow-x: hidden !important;
+}
+.waves-effect .waves-ripple, .waves-effect.waves-blue .waves-ripple {
+background: var(--trans-color);
+}
+
+.dropdown-content li>a, .dropdown-content li>span, .sidenav li>a>i, .sidenav li>a>[class^="mdi-"], .sidenav li>a li>a>[class*="mdi-"], .sidenav li>a>i.material-icons {
+	color: var(--color);
+}
+/*.navbar-fixed {position: absolute;z-index:999999999;} */
+
+.blue, nav {
+	background-color: var(--color) !important;
+}
+
+.input-field input[type=search]:focus:not(.browser-default),.input-field input[type=search]:focus:not(.browser-default)+label i, .input-field input[type=search]:focus:not(.browser-default) ~ .material-icons {
+	background-color: var(--color) !important;
+	color: white;
+}
+
+.modal nav ul a {color: var(--color);}
+
+    header, main, footer, body {
+      padding-left: 300px;
+    }
+
+    @media only screen and (max-width : 992px) {
+      header, main, footer, body {
+        padding-left: 0;
+      }
+    }
+
+.alone-icon{
+    text-align: center;
+	padding-top: 1rem;
+	padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+.alone-icon > i{
+    position:relative;
+    top: calc(50% - 10px); /* 50% - 3/4 of icon height */
+}
+.material-icons.md-256 { font-size: 12rem; }
+
+.modal.bottom-sheet {max-height:100%;}
+#intro-modal {height:100%;overflow: hidden;}
+
+.nav-wrapper .input-field input[type=search] {
+padding-left: 5rem;
+padding-top: 0.6rem;
+color:white;
+display: inline-block;
+font-size: 2.1rem;
+height: 64px !important; /* or height of nav */
+}
+
+.sidenav-trigger, .input-field input[type=search] ~ .material-icons{
+padding-top: 1rem;
+}
+.select-wrapper input.select-dropdown {
+	padding-left:1rem;
+}
+
+.collection-item .title {font-weight:700;}
+
+
+#themeing-modal{
+  overflow: visible;
+}
+
+.sidenav .collapsible-header, .sidenav.fixed .collapsible-header {
+	padding-left: 32px;
+}
+
+::placeholder {
+    color: white;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: white;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+   color: white;
+}
+
+.dark, .dark .sidenav, .dark .sidenav .collapsible-body, .sidenav.fixed .collapsible-body{
+	background-color:#303030 !important;
+	color:#fff !important;
+}
+
+.dark .collection, .black .collection {
+	border: 0px #000;
+}
+
+.dark .collection .collection-item {
+    background-color: #303030;
+    border-bottom: 1px solid #212121;
+}
+
+.dark .modal, .dark .modal .modal-footer, .dark .divider {
+	background-color: #424242;
+}
+
+.dark .sidenav .subheader, .black .sidenav .subheader, .dark .sidenav .subheader .material-icons, .black .sidenav .subheader .material-icons{
+	color: var(--trans-color);
+}
+
+.dark .select-wrapper input.select-dropdown, .black .select-wrapper input.select-dropdown, .dark .sidenav li>a, .black .sidenav li>a {
+	color: #fff;
+	border-bottom: 0px;
+}
+
+.dark .select-wrapper .caret, .black .select-wrapper .caret {
+	fill: white;
+}
+
+.dark .dropdown-content{
+	background-color: #424242;
+}
+
+.black, .black .sidenav, .black .sidenav .collapsible-body, .sidenav.fixed .collapsible-body, .black .divider{
+	background-color:#000 !important;
+	color:#fff !important;
+}
+
+.black .dropdown-content{
+	background-color: black;
+	font-weight: 500;
+}
+
+.black .collection .collection-item {
+    background-color: black;
+    border-bottom: 1px solid black;
+}
+
+.black .modal, .black .modal .modal-footer {
+	background-color: black;
+}
+
+.lyric-icons{display:none;}
+</style>
+<!--Let browser know website is optimized for mobile-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+    <nav class="nav-extended">
+    <div class="nav-wrapper">
+        <div id="search-div" class="input-field">
+          <input id="search-bar" type="search" placeholder="Leerics">
+          <label class="label-icon" for="search"><a href="#" data-target="leerics-side" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a></label>
+          <i class="material-icons">close</i>
+        </div>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent tabs-fixed-width">
+        <li class="tab tooltipped" data-position="bottom" data-tooltip="Recent Songs"><a href="#recent-tab"><i class="material-icons">history</i></a></li>
+        <li class="tab tooltipped" data-position="bottom" data-tooltip="Saved Songs"><a class="active" href="#saved-tab"><i class="material-icons">save</i></a></li>
+        <li class="tab tooltipped" data-position="bottom" data-tooltip="Search Results"><a href="#search-tab"><i class="material-icons">cloud</i></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav sidenav-fixed" id="leerics-side">
+    <li><div class="user-view">
+      <div class="background" style="background-color:var(--color)">
+        <!--<img src="images/office.jpg">-->
+      </div>
+      <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+      <a href="#!name"><span class="white-text name">Leerics</span></a>
+      <a href="#!email"><span class="white-text email">v1.0.0</span></a>
+    </div>
+	<li><a class="modal-trigger" href="#themeing-modal"><i class="material-icons">palette</i>Themeing</a></li>
+	<li><div class="divider"></div></li>
+	<li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header"><i class="material-icons">clear_all</i>Clear Songs</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a onclick="clearRecent()">Clear Recents</a></li>
+	<li><a onclick="clearSaved()">Clear Saved</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+	<li><div class="divider"></div></li>
+	<li><a onclick=""><i class="material-icons">update</i>Check for Updates</a></li>
+	<li><div class="divider"></div></li>
+	</li>
+  </ul>
+    <div id="saved-tab">
+      <div class="page-content"><!-- Your content goes here -->
+	  <ul id="saved-list" class="collection">
+	  
+	  </ul>
+	  </div>
+    </div>
+	 <div id="recent-tab">
+      <div class="page-content"><!-- Your content goes here -->
+	  <ul id="recent-list" class="collection"></ul>
+	  </div>
+    </div>
+	<div id="search-tab">
+      <div class="page-content"><!-- Your content goes here -->
+	  <ul id="search-list" class="collection"></ul>
+	  </div>
+    </div>
+</body>
+  <!-- Modal Structure -->
+  <div id="lyrics-modal" class="modal bottom-sheet">
+    <div class="navbar-fixed">
+    <nav class="transparent z-depth-0">
+      <div class="nav-wrapper">
+         <ul class="right">
+        <li class="lyric-icons offline-icon"><a onclick="refreshSong(window.song.id)"><i class="material-icons">refresh</i></a></li>
+        <li class="lyric-icons offline-icon"><a onclick="deleteSong()"><i class="material-icons">delete</i></a></li>
+        <li class="lyric-icons online-icon"><a onclick="saveSong()"><i class="material-icons">file_download</i></a></li>
+        <li><a class="modal-close"><i class="material-icons">close</i></a></li>
+      </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="parallax-container" style="display:none;">
+      <div class="parallax"><img crossOrigin="Anonymous" id="song-art" /></div>
+    </div>
+  <div class="container">
+      <h2 id="song-title">Song Title</h2>
+      <h4 id="song-artist">Artist</h4>
+      <p id="song-lyrics"></p>
+    </div>
+	<div class="fixed-action-btn">
+  <a class="btn-floating btn-large blue">
+    <i class="large material-icons">play_arrow</i>
+  </a>
+  <ul id="providers-list">
+  </ul>
+</div>
+    </div>
+	
+<div id="warn-modal" class="modal">
+  <div class="modal-content">
+    <h4 id="warnTitle">Delete Song</h4>
+    <p>This Action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <a style="color:var(--color)" id="warningModal-Action" class="modal-action modal-close waves-effect waves-blue btn-flat">YES</a>
+    <a style="color:var(--color)" href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">NO</a>
+  </div>
+</div>
+
+<div id="themeing-modal" class="modal">
+  <div class="modal-content">
+    <h4 style="color:var(--color)">Theme</h4>
+    <div class="input-field">
+    <select id="accent-pick">
+      <option value="#aa1400">Red</option>
+      <option value="#d15900">Orange</option>
+      <option value="#d1bb00">Yellow</option>
+      <option value="#24aa00">Green</option>
+      <option value="#00a0aa">Aqua</option>
+	  <option value="#0054aa">Blue</option>
+      <option value="#7800aa">Purple</option>
+      <option value="#d100b1">Pink</option>
+    </select>
+	</div>
+	<div class="input-field">
+    <select id="theme-pick">
+      <option value="light">Light Theme</option>
+      <option value="dark">Dark Theme</option>
+      <option value="black">Black Theme</option>
+    </select>
+  </div><br><br>
+  <b>[Header]</b><br>
+	<i>Lyrics Here and Stuff!</i>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" style="color:var(--color)" class="modal-action modal-close waves-effect waves-blue btn-flat"><i class="material-icons">close</i></a>
+  </div>
+</div>
+
+<div id="intro-modal" class="modal bottom-sheet modal-fixed-footer">
+	<img src="assets/logo.png" class="circle" style="margin:10% 25%;" width=50% />
+	<h3 style="margin:0% 25%;text-align:center;">Leerics</h3>
+	<h6 style="margin:10%;text-align:center;">Get Lyrics Quick, and Offline.</h6>
+      <div class="center-align">
+      <a onclick="localStorage.intro=true;" style="padding:0px;width: 10rem;" class="btn-large modal-close blue">Get Started</a>
+    </div>
+    </div>
+
+<canvas id="saveCanvas" />
+<script>
+key = 00000000;
+
+if (!localStorage.intro){
+	t = M.Modal.init(document.querySelector('#intro-modal'));
+	t.open();
+}
+
+//from https://stackoverflow.com/a/281335/9328275
+Array.prototype.clean = function(deleteValue) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == deleteValue) {         
+      this.splice(i, 1);
+      i--;
+    }
+  }
+  return this;
+};
+
+song = {};
+onlineLyrics = false;
+if (localStorage.saved){
+	console.log('here');
+	saved = JSON.parse(localStorage.saved);
+	console.log(saved);
+	saved.clean(null);
+	console.log(saved);
+} else {saved = [];};
+
+if (localStorage.recent){
+	recent = JSON.parse(localStorage.recent);
+	recent.clean(null);
+	
+} else {recent = [];};
+	if (localStorage.theme){
+		$('body').addClass(localStorage.theme);
+		$("#theme-pick").val(localStorage.theme);
+	}
+	if (localStorage.accent){
+		$("body").get(0).style.setProperty("--color", localStorage.accent);
+		$("body").get(0).style.setProperty("--trans-color", localStorage.accentDark);
+		$("#accent-pick").val(localStorage.accent);
+	} else {
+		$("#accent-pick").val('#0054aa');
+	}
+
+
+$( document ).ready(function() {
+	initTabs();
+	tabs.select('saved-tab');
+	M.Sidenav.init(document.querySelector('.sidenav'));
+	M.Collapsible.init(document.querySelector('.collapsible'));
+	colorModal = M.Modal.init(document.querySelector('#themeing-modal'));
+	warnModal = M.Modal.init(document.querySelector('#warn-modal'));
+	lyricsModal = M.Modal.init(document.querySelector('#lyrics-modal'),{onCloseEnd: function() {
+	$('.lyric-icons').fadeOut();
+	}});
+	$('select').formSelect();
+	//$('.tooltipped').tooltip()
+
+	
+	
+	//load recent songs
+	if (recent.length!==0){
+	for (d = 0; d < recent.length; d++) { 
+		if (recent[d]===null) {recent.splice(d,1);continue;}
+		$("#recent-list").append('<li onclick="getLyrics('+recent[d].id+')" class="collection-item avatar"><i class="material-icons circle blue">music_note</i><span class="title">'+recent[d].title+'</span><p>'+recent[d].artist+'</p></li>');
+	}
+	} else {
+	$("#recent-list").append('<div class="alone-icon"><i class="material-icons md-256">history</i><h5>Recent Songs will be here...</h5></div>');
+	}
+	
+	//load saved songs
+	if (saved.length!==0){
+	for (d = 0; d < saved.length; d++) { 
+		if (saved[d]===null) {saved.splice(d,1);console.log('removed crap');continue;}
+		$("#saved-list").append('<li onclick="getLyrics('+saved[d].id+')" class="collection-item avatar"><i class="material-icons circle blue">music_note</i><span class="title">'+saved[d].title+'</span><p>'+saved[d].artist+'</p></li>');
+	}
+	} else {
+	$("#saved-list").append('<div class="alone-icon"><i class="material-icons md-256">save</i><h5>Saved Songs will be here...</h5></div>');
+	}
+	
+	$("#search-list").append('<div class="search-placeholder"><div class="alone-icon"><i class="material-icons md-256">cloud</i><h5>Search Results will be here...</h5><h6>Tap the Hourglass to search songs.</h6></div></div>');
+	
+	Waves.attach('.collection li', ['waves-block', 'waves-float']);
+	Waves.init();
+	updateOnlineStatus();
+	
+});
+document.getElementById("search-div").onclick = function() {activateSearch()};
+
+function activateSearch(){
+	if (navigator.onLine) {
+		tabs.select('search-tab');
+	}
+}
+
+ $("#theme-pick").on('change', function() {
+        v = $("#theme-pick").val();
+	if (v==='light'){
+		$('body').removeClass('dark');
+		$('body').removeClass('black');
+		delete localStorage.theme;
+	} else {
+	$('body').removeClass('dark');
+	$('body').removeClass('black');
+	$('body').addClass(v);
+	localStorage.theme = v;
+	}
+});
+
+ $("#accent-pick").on('change', function() {
+        v = $("#accent-pick").val();
+	if (v==='$C'){
+		
+	} else if (v==='#0054aa'){
+		delete localStorage.accent;
+	} else {
+	localStorage.accent = v;
+	t = hexToRgb(v);
+	localStorage.accentDark = 'rgba('+t.r+','+t.g+','+t.b+',0.5)';
+	}
+	$("body").get(0).style.setProperty("--color", v);
+	$("body").get(0).style.setProperty("--trans-color", 'rgba('+t.r+','+t.g+','+t.b+',0.5)');
+});
+
+
+
+function updateOnlineStatus(skip) {
+  if (navigator.onLine) {
+  
+	//show play button
+    $('.fixed-action-btn').fadeIn();
+	
+	//enable search
+    $('.tab:nth-child(3)').fadeIn();
+	$("#search-bar").prop('disabled', false);
+	$('#search-tab').show();
+	initTabs();
+	
+	if (onlineLyrics===true) $('.online-icon').fadeIn();
+	
+  } else {
+	//hide play button
+    $('.fixed-action-btn').fadeOut();
+	
+	//disable search
+    $('.tab:nth-child(3)').fadeOut();
+	$("#search-bar").prop('disabled', true);
+	$('#search-tab').hide();
+	initTabs();
+	
+	if (onlineLyrics===true) $('.online-icon').fadeOut();
+  }
+  initTabs();
+}
+
+function initTabs(){
+	if (typeof tabs!=='undefined') return tabs.updateTabIndicator();
+	tabs = M.Tabs.init(document.querySelector('.tabs'),{swipeable:true,onShow:function(){
+	$("#search-bar").val("");
+	$("#lyrics-modal").scrollTop(0);
+	}});
+}
+
+function deleteSong(){
+	$("#warningModal-Action").attr("onclick",'DoDeleteSong()');
+	$("#warnTitle").text('Delete this Song?');
+	warnModal.open();
+}
+
+function clearRecent(){
+	$("#warningModal-Action").attr("onclick",'delete localStorage.recent;location.reload();');
+	$("#warnTitle").text('Clear Recent Songs?');
+	warnModal.open();
+}
+
+function clearSaved(){
+	$("#warningModal-Action").attr("onclick",'delete localStorage.saved;location.reload();');
+	$("#warnTitle").text('Clear Saved Songs?');
+	warnModal.open();
+}
+
+
+
+
+
+function DoDeleteSong(){
+	ind = saved.map(function(e) { return e.id; }).indexOf(song.id);
+	delete saved[ind];
+	if (saved.length===1 && saved[0]==='undefined'||saved.length===1 && saved[0]===null) saved = [];
+	console.log(saved);
+	localStorage.saved = JSON.stringify(saved);
+	lyricsModal.close();
+	song = {};
+	M.toast({html: 'Song Deleted'});
+	updateCollection('saved');
+}
+
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+// search stuffs
+var textInput = document.getElementById('search-bar');
+
+// Init a timeout variable to be used below
+var timeout = null;
+
+// Listen for keystroke events
+textInput.onkeyup = function (e) {
+
+    // Clear the timeout if it has already been set.
+    // This will prevent the previous task from executing
+    // if it has been less than <MILLISECONDS>
+    clearTimeout(timeout);
+
+    // Make a new timeout set to go off in 800ms
+    timeout = setTimeout(function () {
+		if (textInput.value.length===0){
+		$("#search-list").empty();
+		$('.search-placeholder').show();
+		} else {
+			$('.search-placeholder').hide();
+			$("#search-list").empty();
+			loadSearch(textInput.value);
+		}
+    }, 500);
+};
+
+
+function loadSearch(q){
+$.getJSON('https://coolshitlyrics.glitch.me/?key='+key+'&a=search&q='+encodeURIComponent(q), function(data) {
+    //data is the JSON string
+	for (i = 0; i < data.length; i++) {
+	result = data[i];
+	if (result.title.length>36) result.title = result.title.substring(0, 35)+'...';
+	$("#search-list").append('<li onclick="getLyrics('+result.id+')" class="collection-item avatar"><img src="'+result.song_art_image_thumbnail_url+'" alt="" class="circle"><span class="title">'+result.title+'</span><p>'+result.primary_artist.name+'</p></li>');
+	Waves.attach('#search-list .collection-item', ['waves-block', 'waves-float']);
+	Waves.init();
+	}
+});
+}
+
+async function getLyrics(id,forceDownload){
+	console.log('getting song ',id);
+	getSongData(id,forceDownload).then(function(song){
+	lyricsModal.open();
+	$('#song-title').text(song.title);
+	$('#song-artist').text(song.artist);
+	$("#song-art").attr("src",song.img);
+	//M.Parallax.init(document.querySelector('.parallax'));
+	l = '<i>'+song.lyrics+'</i>';
+	l = l.replace(/\n/g, "<br>");;
+	l = l.replaceAll(/\[/gi,'</i><b>[');
+	l = l.replaceAll(/\]/gi,']</b><i>');
+	if (song.media){
+	$("#providers-list").empty();
+	for (i = 0; i < song.media.length; i++) {
+		switch (song.media[i].provider){
+			case 'spotify':
+			color = 'green',
+			icon = 'fa-spotify';
+			break;
+			
+			case 'youtube':
+			color = 'red',
+			icon = 'fa-youtube';
+			break;
+			
+			case 'apple_music':
+			color = 'grey darken-1',
+			icon = 'fa-itunes-note"';
+			break;
+		}
+		$("#providers-list").append('<li><a href="'+song.media[i].url+'" target="_blank" class="btn-floating '+color+'"><i class="fab '+icon+'"></i></a></li>');
+	}
+	M.FloatingActionButton.init(document.querySelector('.fixed-action-btn'), {hoverEnabled: false});
+	}
+	$('#song-lyrics').html(l);
+	window.song = song;
+	addToRecent(id,song);
+})
+}
+
+function getSongData(id,forceDownload){
+	console.log('the game ',id);
+	if (!forceDownload){
+	ind = saved.map(function(e) { return e.id; }).indexOf(id);
+	if (ind!==-1){
+		$('.offline-icon').fadeIn();
+		$('.online-icon').fadeOut();
+		onlineLyrics = false;
+		return Promise.resolve({
+			title: saved[ind].title,
+			artist: saved[ind].artist,
+			id: id,
+			img: saved[ind].img,
+			media: saved[ind].media,
+			lyrics: saved[ind].lyrics,
+			offline: true
+			});
+		};
+	}
+	
+	if (!navigator.onLine){
+		M.toast({html: 'Device Offline'});
+		//return {offline:true};
+	}
+	return $.getJSON('https://coolshitlyrics.glitch.me/?key='+key+'&a=song&q='+id).then(function(data){
+	$('.offline-icon').fadeOut();
+	$('.online-icon').fadeIn();
+	onlineLyrics = true;
+	return {
+		title: data.title,
+		artist: data.primary_artist.name,
+		img: data.header_image_url,
+		lyrics: data.lyrics,
+		id: id,
+		media: data.media,
+		cloud: true,
+		etc: data
+	};
+	});
+}
+
+function refreshSong(id){
+	ind = saved.map(function(e) { return e.id; }).indexOf(id);
+	delete saved[ind];
+	getLyrics(id);
+	saveSong();
+	M.toast({html: 'Song Refreshed'});
+}
+
+function saveSong(){
+	ind = saved.map(function(e) { return e.id; }).indexOf(song.id);
+	if (ind!==-1){
+		updateObj(song.id,ind,saved);
+	} else {
+	/*
+		var c = document.getElementById("saveCanvas");
+		var ctx = c.getContext("2d");
+		var img = document.getElementById("song-art");
+		ctx.drawImage(img, 10, 10);
+		return alert(c.toDataURL());
+		*/
+		itm = {id:song.id, title: song.title, media: song.media, artist: song.artist,lyrics: song.lyrics, offline: true};
+		saved.unshift(itm);
+		$('.online-icon').fadeOut();
+		$('.offline-icon').fadeIn();
+		M.toast({html: 'Song Saved!'});
+	}
+	console.log(saved);
+	localStorage.saved = JSON.stringify(saved);
+	updateCollection('saved');
+}
+
+function addToRecent(id,song){
+	ind = recent.map(function(e) { return e.id; }).indexOf(id);
+	if (ind!==-1){
+		updateObj(id,ind,recent);
+	} else {
+		itm = {title: song.title, artist: song.artist,id:id};
+		recent.unshift(itm);
+	}
+	console.log(recent);
+	localStorage.recent = JSON.stringify(recent);
+	updateCollection('recent');
+}
+
+
+function updateCollection(tab){
+	arr = eval(tab);
+	$("#"+tab+"-list").empty();
+	for (d = 0; d < arr.length; d++) { 
+		if (arr[d]===null) {arr.splice(d,1);continue;}
+		$("#"+tab+"-list").append('<li onclick="getLyrics('+arr[d].id+')" class="collection-item avatar"><i class="material-icons circle blue">music_note</i><span class="title">'+arr[d].title+'</span><p>'+arr[d].artist+'</p></li>');
+	}
+	Waves.attach('.collection li', ['waves-block', 'waves-float']);
+	Waves.init();
+}
+
+function updateObj(id,index,arr) {
+	if (index===0) return;
+	a = arr[index];
+	arr.splice(index,1);
+	arr.unshift(a);
+	return arr;
+}
+
+
+function isEmpty(obj){
+	return Object.keys(obj).length === 0 && obj.constructor === Object
+}
+
+//from https://stackoverflow.com/a/17606289/9328275
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+//from https://stackoverflow.com/a/5624139/9328275
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+</script>
+
