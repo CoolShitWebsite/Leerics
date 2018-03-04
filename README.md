@@ -1,0 +1,2 @@
+# Leerics
+Offline Lyrics thing
